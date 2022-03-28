@@ -4,13 +4,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javax.imageio.ImageIO;
 import org.json.JSONObject;
 
 public class xkcdController implements Initializable {
@@ -38,10 +41,12 @@ public class xkcdController implements Initializable {
 
             // Turn the response into a JSON object.
             JSONObject json = new JSONObject(new String(response.readAllBytes()));
-
             int newestComicId = (int) json.get("num");
 
             comicInformationLabel.setText("The newest comic is #" + newestComicId + ".");
+            Image comic = new Image(json.get("img").toString());
+
+            comicImageView.setImage(comic);
 
         } catch (IOException e) {
             e.printStackTrace();
