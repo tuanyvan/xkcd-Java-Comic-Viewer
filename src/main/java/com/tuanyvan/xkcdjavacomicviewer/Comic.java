@@ -51,8 +51,12 @@ public class Comic {
         return imgURI;
     }
 
-    // Custom Methods
+    // Setters
+    public void setImgURI(String imgURI) {
+        this.imgURI = imgURI;
+    }
 
+    // Custom Methods
     /**
      * @return String representing the time since the comic's publication. Specifies the years since and months since publication if the comic is old enough.
      */
