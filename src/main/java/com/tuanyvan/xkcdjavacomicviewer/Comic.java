@@ -1,7 +1,11 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
+import javafx.scene.image.Image;
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashMap;
 
 public class Comic {
 
@@ -11,12 +15,19 @@ public class Comic {
     private int comicID;
     private String imgURI;
 
-    public Comic(String title, String altText, LocalDate publishedDate, int comicID, String imgURI) {
-        this.title = title;
-        this.altText = altText;
-        this.publishedDate = publishedDate;
-        this.comicID = comicID;
-        this.imgURI = imgURI;
+    public Comic(JSONObject json) {
+        title = json.get("title").toString();
+        altText = json.get("alt").toString();
+
+        HashMap<String, Integer> date = new HashMap<>();
+        date.put("year", Integer.valueOf(json.get("year").toString()));
+        date.put("month", Integer.valueOf(json.get("month").toString()));
+        date.put("day", Integer.valueOf(json.get("day").toString()));
+
+        publishedDate = LocalDate.of(date.get("year"), date.get("month"), date.get("day"));
+
+        comicID = (int) json.get("num");
+        imgURI = json.get("img").toString();
     }
 
     // Getters

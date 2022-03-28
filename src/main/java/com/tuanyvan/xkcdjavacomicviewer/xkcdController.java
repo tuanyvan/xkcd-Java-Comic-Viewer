@@ -41,12 +41,10 @@ public class xkcdController implements Initializable {
 
             // Turn the response into a JSON object.
             JSONObject json = new JSONObject(new String(response.readAllBytes()));
-            int newestComicId = (int) json.get("num");
-
+            Comic newestComic = new Comic(json);
+            newestComicId = newestComic.getComicID();
             comicInformationLabel.setText("The newest comic is #" + newestComicId + ".");
-            Image comic = new Image(json.get("img").toString());
-
-            comicImageView.setImage(comic);
+            comicImageView.setImage(new Image(newestComic.getImgURI()));
 
         } catch (IOException e) {
             e.printStackTrace();
