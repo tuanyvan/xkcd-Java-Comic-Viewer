@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/XKCD-Java-Comic-Viewer.iml" filepath="$PROJECT_DIR$/XKCD-Java-Comic-Viewer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xkcd-Java-Comic-Viewer.iml" filepath="$PROJECT_DIR$/xkcd-Java-Comic-Viewer.iml" />
     </modules>
   </component>
 </project>

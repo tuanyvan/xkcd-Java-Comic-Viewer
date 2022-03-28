@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="XKCD-Java-Comic-Viewer" />
+        <module name="xkcd-Java-Comic-Viewer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="XKCD-Java-Comic-Viewer" target="17" />
+      <module name="xkcd-Java-Comic-Viewer" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
