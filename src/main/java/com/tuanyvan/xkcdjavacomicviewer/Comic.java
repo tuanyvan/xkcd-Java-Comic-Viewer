@@ -1,6 +1,5 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
-import javafx.scene.image.Image;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
