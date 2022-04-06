@@ -70,7 +70,7 @@ public class xkcdController implements Initializable {
 
     @FXML
     void openDetailedStatisticsScene(ActionEvent event) {
-
+        // TODO: Add detailed statistics scene.
     }
 
     private Comic makeComicRequest(String url) throws IOException {
@@ -82,7 +82,7 @@ public class xkcdController implements Initializable {
 
             // Turn the response into a JSON object.
             JSONObject json = new JSONObject(new String(response.readAllBytes()));
-
+            System.out.println(json);
             return new Comic(json);
         }
         catch (UnknownHostException nhe) {
