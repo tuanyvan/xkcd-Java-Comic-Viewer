@@ -1,11 +1,14 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,8 +24,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -54,17 +57,26 @@ public class XKCDController implements Initializable {
     @FXML
     private TextField idInputField;
 
+    @FXML
+    private ListView<Comic> comicListView;
+
     private int newestComicId;
     private Comic currentComic;
+    private Repository comicRepo;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         try {
             processRequest("https://xkcd.com/info.0.json");
-            newestComicId = currentComic.getComicID(); // Track the upper bound for the random comic generator
+            newestComicId = currentComic.getComicID(); // Track the upper bound for the random comic generator.
         } catch (IOException e) {
-            e.printStackTrace();
+            // TODO: Add warning screen to connect to Internet.
         }
+
+        comicRepo = new Repository(new ArrayList<Comic>(), Repository.File.NOT_USED);
+        updateComicListView();
+
     }
 
     private void processRequest(String url) throws IOException {
@@ -83,6 +95,22 @@ public class XKCDController implements Initializable {
     }
 
     @FXML
+    private void addComic(ActionEvent event) {
+        comicRepo.getComics().add(currentComic);
+        updateComicListView();
+    }
+
+    @FXML
+    private void deleteComic(ActionEvent event) {
+        comicRepo.getComics().remove(comicListView.getSelectionModel().getSelectedItem());
+        updateComicListView();
+    }
+
+    private void updateComicListView() {
+        comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
+    }
+
+    @FXML
     private void openDetailedStatisticsScene(ActionEvent event) {
         // TODO: Add detailed statistics scene.
     }
@@ -95,7 +123,7 @@ public class XKCDController implements Initializable {
             processRequest(String.format("https://xkcd.com/%d/info.0.json", Integer.parseInt(id)));
         }
         catch (NumberFormatException nfe) {
-            searchComicLabel.setText("Please input a valid number.");
+            searchComicLabel.setText("Please input a valid\nnumber.");
         }
         catch (IOException ioe) {
             searchComicLabel.setText("That comic ID is invalid.");
