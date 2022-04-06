@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
@@ -73,15 +74,23 @@ public class xkcdController implements Initializable {
     }
 
     private Comic makeComicRequest(String url) throws IOException {
-        // Establish a connection to the most recent comic JSON.
-        HttpsURLConnection request = (HttpsURLConnection) new URL(url).openConnection();
-        request.setRequestProperty("User-Agent", "application/json");
-        InputStream response = request.getInputStream();
+        try {
+            // Establish a connection to the most recent comic JSON.
+            HttpsURLConnection request = (HttpsURLConnection) new URL(url).openConnection();
+            request.setRequestProperty("User-Agent", "application/json");
+            InputStream response = request.getInputStream();
 
-        // Turn the response into a JSON object.
-        JSONObject json = new JSONObject(new String(response.readAllBytes()));
+            // Turn the response into a JSON object.
+            JSONObject json = new JSONObject(new String(response.readAllBytes()));
 
-        return new Comic(json);
+            return new Comic(json);
+        }
+        catch (UnknownHostException nhe) {
+            // TODO: Add warning screen to connect to Internet.
+        }
+
+        // If the request could not be made, return null.
+        return null;
     }
 
     private void setControllerLabels(Comic comic) {
