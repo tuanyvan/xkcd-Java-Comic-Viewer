@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ComicTest {
 
-    private Comic premadeComic, monthOldComic, dayOldComic;
+    private Comic premadeComic;
     private LocalDate today = LocalDate.now();
     private JSONObject premadeJSON;
 
@@ -22,7 +22,7 @@ class ComicTest {
         // If subtracting 1 from the month or year would cause an issue, change it to YYYY/12/12
         if (today.getMonth().getValue() == 1 || today.getDayOfMonth() == 1) {
             today = LocalDate.of(today.getYear(), 12, 12);
-            System.out.println(String.format("Using an alternative date of %s for unit test.", today));
+            System.out.printf("Using an alternative date of %s for unit test.%n", today);
         }
 
         // Define a sample JSON file that will always be the same.
@@ -91,8 +91,8 @@ class ComicTest {
         JSONObject plusAMonth = new JSONObject(plusAYear.toString());
         plusAMonth.put("month", today.getMonth().getValue());
 
-        monthOldComic = new Comic(plusAYear);
-        dayOldComic = new Comic(plusAMonth);
+        Comic monthOldComic = new Comic(plusAYear);
+        Comic dayOldComic = new Comic(plusAMonth);
 
         String monthOldComicTSP = monthOldComic.getTimeSincePublication();
         Period monthOldComicTD = Period.between(monthOldComic.getPublishedDate(), today);
@@ -121,16 +121,16 @@ class ComicTest {
     void setInavlidImgURI() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> { premadeComic.setImgURI("http:/excellenturl.com"); }
+            () -> premadeComic.setImgURL("http:/excellenturl.com")
         );
 
         Assertions.assertThrows(
             IllegalArgumentException.class,
-            () -> { premadeComic.setImgURI("https://imgs.xkcd.com/comics/linguistics_degree"); }
+            () -> premadeComic.setImgURL("https://imgs.xkcd.com/comics/linguistics_degree")
         );
 
         Assertions.assertDoesNotThrow(
-                () -> premadeComic.setImgURI("https://imgs.xkcd.com/comics/linguistics_degree.png")
+                () -> premadeComic.setImgURL("https://imgs.xkcd.com/comics/linguistics_degree.png")
         );
     }
 
@@ -151,6 +151,6 @@ class ComicTest {
 
     @Test
     void getImgURI() {
-        assertEquals("https://imgs.xkcd.com/comics/sloped_border_2x.png", premadeComic.getImgURI());
+        assertEquals("https://imgs.xkcd.com/comics/sloped_border_2x.png", premadeComic.getImgURL());
     }
 }

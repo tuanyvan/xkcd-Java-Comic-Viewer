@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuanyvan.xkcdjavacomicviewer.xkcdController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuanyvan.xkcdjavacomicviewer.XKCDController">
    <children>
       <GridPane prefHeight="540.0" prefWidth="960.0">
         <columnConstraints>
@@ -30,7 +30,7 @@
                 <RowConstraints maxHeight="265.0" minHeight="10.0" prefHeight="259.9999694824219" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="comicImageView" fitHeight="261.0" fitWidth="303.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <ImageView fx:id="comicImageView" fitHeight="261.0" fitWidth="516.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <GridPane GridPane.rowIndex="1">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,7 +50,7 @@
                           </rowConstraints>
                            <children>
                               <Button mnemonicParsing="false" onAction="#generateRandomComicButton" prefHeight="55.0" prefWidth="255.0" text="Generate A Random Comic" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" />
-                              <Button mnemonicParsing="false" onAction="#openDetailedStatisticsScene" prefHeight="55.0" prefWidth="240.0" text="Zoom and Enhance" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+                              <Button mnemonicParsing="false" onAction="#createLargePreviewPane" prefHeight="55.0" prefWidth="240.0" text="Zoom and Enhance" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
                            </children>
                         </GridPane>
                         <GridPane>
@@ -111,7 +111,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Hyperlink fx:id="comicURL" onMouseClicked="#openInBrowser" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Hyperlink fx:id="comicURL" onAction="#openInBrowser" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>

@@ -3,10 +3,8 @@ package com.tuanyvan.xkcdjavacomicviewer;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.json.JSONObject;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
@@ -14,11 +12,11 @@ import java.util.HashMap;
 
 public class Comic {
 
-    private String title;
-    private String altText;
-    private LocalDate publishedDate;
-    private int comicID;
-    private String imgURI;
+    private final String title;
+    private final String altText;
+    private final LocalDate publishedDate;
+    private final int comicID;
+    private String imgURL;
 
     public Comic(JSONObject json) {
         title = json.get("title").toString();
@@ -33,7 +31,7 @@ public class Comic {
         publishedDate = LocalDate.of(date.get("year"), date.get("month"), date.get("day"));
 
         comicID = (int) json.get("num");
-        setImgURI(json.get("img").toString());
+        setImgURL(json.get("img").toString());
     }
 
     // Getters
@@ -53,23 +51,23 @@ public class Comic {
         return comicID;
     }
 
-    public String getImgURI() {
-        return imgURI;
+    public String getImgURL() {
+        return imgURL;
     }
 
     // Setters
-    public void setImgURI(String imgURI) {
+    public void setImgURL(String imgURL) {
         UrlValidator validator = new UrlValidator();
-        if (validator.isValid(imgURI)) {
+        if (validator.isValid(imgURL)) {
 
             // Check if the link actually redirects to a valid HTTPS file.
             try {
-                InputStream request = new URL(imgURI).openConnection().getInputStream();
+                InputStream request = new URL(imgURL).openConnection().getInputStream();
             }
             catch (IOException mue) {
                 throw new IllegalArgumentException("The provided URL is not a valid link.");
             }
-            this.imgURI = imgURI;
+            this.imgURL = imgURL;
 
         }
         else {

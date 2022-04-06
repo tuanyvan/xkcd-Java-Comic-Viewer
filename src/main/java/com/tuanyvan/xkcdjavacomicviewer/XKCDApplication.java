@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class xkcdApplication extends Application {
+public class XKCDApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(xkcdApplication.class.getResource("xkcd-repository-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(XKCDApplication.class.getResource("xkcd-repository-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("xkcd Comic Viewer");
         stage.setScene(scene);
