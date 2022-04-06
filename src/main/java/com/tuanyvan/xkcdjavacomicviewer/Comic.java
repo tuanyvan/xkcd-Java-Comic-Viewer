@@ -62,26 +62,35 @@ public class Comic {
     public String getTimeSincePublication() {
         LocalDate today = LocalDate.now();
         Period timeDiff = Period.between(publishedDate, today);
+        String monthField = determinePluralDuration("month", timeDiff.getMonths());
+        String dayField = determinePluralDuration("day", timeDiff.getDays());
 
-        if(timeDiff.getYears() >= 1) {
+        if (timeDiff.getYears() >= 1) {
+            String yearField = determinePluralDuration("year", timeDiff.getYears());
             return String.format(
-                    "%d years, %d months, %d days",
+                    "%d %s, %d %s, %d %s",
                     timeDiff.getYears(),
+                    yearField,
                     timeDiff.getMonths(),
-                    timeDiff.getDays()
+                    monthField,
+                    timeDiff.getDays(),
+                    dayField
             );
-        }
-        else if (timeDiff.getMonths() >= 1) {
+        } else if (timeDiff.getMonths() >= 1) {
             return String.format(
-                    "%d months, %d days",
+                    "%d %s, %d %s",
                     timeDiff.getMonths(),
-                    timeDiff.getDays()
+                    monthField,
+                    timeDiff.getDays(),
+                    dayField
             );
+        } else {
+            return String.format("%d %s", timeDiff.getDays(), dayField);
         }
-        else {
-            return String.format("%d days", timeDiff.getDays());
-        }
+    }
 
+    private String determinePluralDuration(String duration, int length) {
+        return length == 1 ? duration : duration + "s";
     }
 
 }

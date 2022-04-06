@@ -111,7 +111,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Hyperlink fx:id="comicURL" onAction="#openInBrowser" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Hyperlink fx:id="comicURL" onMouseClicked="#openInBrowser" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets left="5.0" />
                                  </GridPane.margin>
