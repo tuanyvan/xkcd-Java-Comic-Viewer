@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -23,7 +24,6 @@ import java.time.format.FormatStyle;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
@@ -46,38 +46,63 @@ public class XKCDController implements Initializable {
     private Label titleLabel;
 
     @FXML
+    private Label searchComicLabel;
+
+    @FXML
     private Hyperlink comicURL;
 
+    @FXML
+    private TextField idInputField;
+
     private int newestComicId;
+    private Comic currentComic;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            Comic newestComic = makeComicRequest("https://xkcd.com/info.0.json");
-            assert newestComic != null;
-            newestComicId = newestComic.getComicID(); // Track the upper bound for the random comic generator
-            setControllerLabels(newestComic);
+            processRequest("https://xkcd.com/info.0.json");
+            newestComicId = currentComic.getComicID(); // Track the upper bound for the random comic generator
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    void generateRandomComicButton(ActionEvent event) throws IOException {
-        Random rng = new Random();
-        Comic comic = makeComicRequest(String.format("https://xkcd.com/%d/info.0.json", rng.nextInt(1, newestComicId)));
-        assert comic != null;
-        setControllerLabels(comic);
+    private void processRequest(String url) throws IOException {
+        setControllerLabels(makeComicRequest(url));
     }
 
     @FXML
-    void openInBrowser(ActionEvent event) throws IOException {
+    private void generateRandomComicButton(ActionEvent event) throws IOException {
+        Random rng = new Random();
+        processRequest(String.format("https://xkcd.com/%d/info.0.json", rng.nextInt(1, newestComicId))); // Exclude the latest comic from RNG
+    }
+
+    @FXML
+    private void openInBrowser(ActionEvent event) throws IOException {
         Desktop.getDesktop().browse(URI.create(comicURL.getText()));
     }
 
     @FXML
-    void openDetailedStatisticsScene(ActionEvent event) {
+    private void openDetailedStatisticsScene(ActionEvent event) {
         // TODO: Add detailed statistics scene.
+    }
+
+    @FXML
+    private void handleComicSearch(ActionEvent event) {
+        try {
+            String id = idInputField.getText();
+            searchComicLabel.setText("Search Comic By ID");
+            processRequest(String.format("https://xkcd.com/%d/info.0.json", Integer.parseInt(id)));
+        }
+        catch (NumberFormatException nfe) {
+            searchComicLabel.setText("Please input a valid number.");
+        }
+        catch (IOException ioe) {
+            searchComicLabel.setText("That comic ID is invalid.");
+        }
+        finally {
+            idInputField.clear();
+        }
     }
 
     private Comic makeComicRequest(String url) throws IOException {
@@ -89,7 +114,8 @@ public class XKCDController implements Initializable {
 
             // Turn the response into a JSON object.
             JSONObject json = new JSONObject(new String(response.readAllBytes()));
-            return new Comic(json);
+            currentComic = new Comic(json);
+            return currentComic;
         }
         catch (UnknownHostException nhe) {
             // TODO: Add warning screen to connect to Internet.
