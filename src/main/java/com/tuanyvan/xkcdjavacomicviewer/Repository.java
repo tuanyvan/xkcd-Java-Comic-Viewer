@@ -10,10 +10,17 @@ public class Repository {
 
     private ArrayList<Comic> comics;
 
+    /**
+     * The default constructor which creates an empty ArrayList<Comic> for the comics field.
+     */
     public Repository() {
         setComics(new ArrayList<Comic>());
     }
 
+    /**
+     * A 1-param constructor which uses a JSON object to parse a series of Comic entries.
+     * @param json  A JSONObject containing the contents of the Repository class.
+     */
     public Repository(JSONObject json) {
         ArrayList<Comic> jsonComics = new ArrayList<>();
         for (Iterator<String> it = json.keys(); it.hasNext(); ) {
@@ -23,27 +30,46 @@ public class Repository {
         setComics(jsonComics);
     }
 
+    /**
+     * @return The ArrayList<Comic> contents of the Repository's comics field.
+     */
     public ArrayList<Comic> getComics() {
         return this.comics;
     }
 
+    /**
+     * Sets the comics field and sorts it.
+     * @param comics    The ArrayList<Comic> to set comics to.
+     */
     public void setComics(ArrayList<Comic> comics) {
         this.comics = comics;
         this.sortComics();
     }
 
+    /**
+     * @return The number of items in the comics field.
+     */
     public int getNumberOfComics() {
         return comics.size();
     }
 
+    /**
+     * @return The sum of all the Comic IDs in the comics field.
+     */
     public int getSumOfComicIDs() {
         return comics.stream().reduce(0, (sum, currentComic) -> sum + currentComic.getComicID(), Integer::sum);
     }
 
+    /**
+     * @return The average Comic ID in the comics field.
+     */
     public double getAverageOfComicIDs() {
         return Math.round((double) getSumOfComicIDs() / getNumberOfComics() * 100.0) / 100.0;
     }
 
+    /**
+     * @return The standard deviation of the Comic IDs in the comics field.
+     */
     public double getStandardDeviationOfComicIDs() {
         double averageComicId = getAverageOfComicIDs();
         return
@@ -59,10 +85,17 @@ public class Repository {
                 ) * 100.0) / 100.0;
     }
 
+    /**
+     * Uses a comparator to sort each Comic object by their comidID fields.
+     */
     public void sortComics() {
         getComics().sort(Comparator.comparingInt(Comic::getComicID));
     }
 
+    /**
+     * Adds a comic to the comics ArrayList if it is not a duplicate of an existing comic.
+     * @param comic The Comic object to add.
+     */
     public void addToComics(Comic comic) {
         if (this.getComics().stream().noneMatch((c) -> c.getComicID() == comic.getComicID())) {
             this.getComics().add(comic);
@@ -70,6 +103,10 @@ public class Repository {
         }
     }
 
+    /**
+     * Removes the specified Comic object only if it exists.
+     * @param comic The Comic object to remove.
+     */
     public void removeFromComics(Comic comic) {
         if (this.getComics().contains(comic)) {
             this.getComics().remove(comic);
@@ -77,6 +114,9 @@ public class Repository {
         }
     }
 
+    /**
+     * @return A JSON payload containing the Repository's comic contents.
+     */
     public JSONObject getJSON() {
         JSONObject json = new JSONObject();
         for (int i = 0; i < getComics().size(); i++) {
