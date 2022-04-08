@@ -199,9 +199,9 @@ public class XKCDController implements Initializable {
         Stage newWindow = new Stage();
         newWindow.setTitle(String.format("%s - %s", comicIdLabel.getText(), titleLabel.getText()));
         FullImageViewController fivc = loader.getController();
-        newWindow.show();
         newWindow.setScene(fullImageView);
         fivc.setPreview(comicImageView.getImage().getUrl(), altLabel.getText());
+        newWindow.show();
     }
 
     private void createConnectionWarningPane() throws IOException {
@@ -209,9 +209,9 @@ public class XKCDController implements Initializable {
         loader.setLocation(getClass().getResource("warning-screen-view.fxml"));
         Scene warningPane = new Scene(loader.load());
         Stage newWindow = new Stage();
-        newWindow.show();
         newWindow.setScene(warningPane);
-        newWindow.setTitle("404 - Really Not Found");
+        newWindow.setTitle("500 - Internet Not Found");
+        newWindow.show();
     }
 
     public void setComicRepo(Repository comicRepo) {
