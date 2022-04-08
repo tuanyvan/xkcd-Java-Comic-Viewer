@@ -19,7 +19,7 @@ class ComicTest {
     @BeforeEach
     void setUp() {
 
-        // If subtracting 1 from the month or year would cause an issue, change it to YYYY/12/12
+        // If subtracting 1 from the month or dayOfMonth would cause an issue, change it to YYYY/12/12
         if (today.getMonth().getValue() == 1 || today.getDayOfMonth() == 1) {
             today = LocalDate.of(today.getYear(), 12, 12);
             System.out.printf("Using an alternative date of %s for unit test.%n", today);
@@ -39,6 +39,7 @@ class ComicTest {
         );
 
         premadeComic = new Comic(premadeJSON);
+
     }
 
     @Test
@@ -163,4 +164,9 @@ class ComicTest {
         assertEquals("Comic #2602 - Sloped Border", premadeComic.toString());
     }
 
+    @Test
+    void getJSON() {
+        // The comic's JSON should be identical to the JSON that was first passed into it.
+        assertEquals(premadeJSON.toString(), premadeComic.getJSON().toString());
+    }
 }
