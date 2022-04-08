@@ -60,7 +60,7 @@ public class Comic {
         UrlValidator validator = new UrlValidator();
         if (validator.isValid(imgURL)) {
 
-            // Check if the link actually redirects to a valid HTTPS file.
+            // Check if the link actually redirects to a valid HTTPS file. If the request throws an exception, then it's not valid.
             try {
                 InputStream request = new URL(imgURL).openConnection().getInputStream();
             }
