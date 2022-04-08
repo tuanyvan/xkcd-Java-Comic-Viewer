@@ -45,4 +45,24 @@ public class Repository {
         return comics.stream().reduce(0.0, (sum, currentComic) -> sum + Math.pow(currentComic.getComicID() + averageComicId, 2), Double::sum) / getNumberOfComics();
     }
 
+    public boolean addToComics(Comic comic) {
+        if (this.getComics().stream().noneMatch((c) -> c.getComicID() == comic.getComicID())) {
+            this.getComics().add(comic);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean removeFromComics(Comic comic) {
+        if (this.getComics().contains(comic)) {
+            this.getComics().remove(comic);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

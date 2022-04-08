@@ -1,7 +1,6 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +24,7 @@ import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
-import java.util.List;
+import java.util.function.Predicate;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -96,17 +95,18 @@ public class XKCDController implements Initializable {
 
     @FXML
     private void addComic(ActionEvent event) {
-        comicRepo.getComics().add(currentComic);
+        comicRepo.addToComics(currentComic);
         updateComicListView();
     }
 
     @FXML
     private void deleteComic(ActionEvent event) {
-        comicRepo.getComics().remove(comicListView.getSelectionModel().getSelectedItem());
+        comicRepo.removeFromComics(comicListView.getSelectionModel().getSelectedItem());
         updateComicListView();
     }
 
     private void updateComicListView() {
+        comicRepo.getComics().sort(Comparator.comparingInt(Comic::getComicID));
         comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
     }
 

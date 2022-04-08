@@ -119,16 +119,20 @@ class ComicTest {
 
     @Test
     void setInavlidImgURI() {
+
+        // Invalid protocols and URL formats are not allowed.
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> premadeComic.setImgURL("http:/excellenturl.com")
         );
 
+        // URLs which fail to direct to a valid location are not allowed.
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> premadeComic.setImgURL("https://imgs.xkcd.com/comics/linguistics_degree")
         );
 
+        // Only URLs with the proper format and location are allowed.
         Assertions.assertDoesNotThrow(
                 () -> premadeComic.setImgURL("https://imgs.xkcd.com/comics/linguistics_degree.png")
         );
@@ -153,4 +157,10 @@ class ComicTest {
     void getImgURI() {
         assertEquals("https://imgs.xkcd.com/comics/sloped_border_2x.png", premadeComic.getImgURL());
     }
+
+    @Test
+    void getString() {
+        assertEquals("Comic #2602 - Sloped Border", premadeComic.toString());
+    }
+
 }

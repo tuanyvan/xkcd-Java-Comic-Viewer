@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tuanyvan.xkcdjavacomicviewer.XKCDController">
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0">
@@ -65,7 +64,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#generateRandomComicButton" prefHeight="55.0" prefWidth="255.0" text="Generate A Random Comic" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" />
+                                          <Button mnemonicParsing="false" onAction="#generateRandomComicButton" prefHeight="55.0" prefWidth="255.0" text="Show Me A Random Comic" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" />
                                           <Button mnemonicParsing="false" onAction="#createLargePreviewPane" prefHeight="55.0" prefWidth="240.0" text="Zoom and Enhance" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
                                        </children>
                                     </GridPane>

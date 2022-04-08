@@ -113,4 +113,9 @@ public class Comic {
         return length == 1 ? duration : duration + "s";
     }
 
+    @Override
+    public String toString() {
+        return String.format("Comic #%d - %s", getComicID(), getTitle());
+    }
+
 }
