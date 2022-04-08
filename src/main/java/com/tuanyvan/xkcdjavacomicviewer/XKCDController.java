@@ -19,17 +19,16 @@ import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
-import java.util.function.Predicate;
 
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.json.JSONObject;
 
 public class XKCDController implements Initializable {
@@ -61,7 +60,7 @@ public class XKCDController implements Initializable {
     @FXML
     private ListView<Comic> comicListView;
 
-    private int newestComicId;
+    private int newestComicId = 3;
     private Comic currentComic;
     private Repository comicRepo;
 
@@ -71,8 +70,13 @@ public class XKCDController implements Initializable {
         try {
             processRequest("https://xkcd.com/info.0.json");
             newestComicId = currentComic.getComicID(); // Track the upper bound for the random comic generator.
-        } catch (IOException e) {
-            // TODO: Add warning screen to connect to Internet.
+        }
+        catch (IOException | NullPointerException e) {
+            try {
+                createConnectionWarningPane();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
         comicRepo = new Repository(new ArrayList<Comic>(), Repository.File.NOT_USED);
@@ -81,13 +85,22 @@ public class XKCDController implements Initializable {
     }
 
     private void processRequest(String url) throws IOException {
-        setControllerLabels(makeComicRequest(url));
+        setControllerLabels(Objects.requireNonNull(makeComicRequest(url)));
     }
 
     @FXML
     private void generateRandomComicButton(ActionEvent event) throws IOException {
-        Random rng = new Random();
-        processRequest(String.format("https://xkcd.com/%d/info.0.json", rng.nextInt(1, newestComicId))); // Exclude the latest comic from RNG
+        try {
+            Random rng = new Random();
+            processRequest(
+                String.format("https://xkcd.com/%d/info.0.json",
+                        rng.nextInt(1, newestComicId) // Exclude the latest comic from RNG.
+                )
+            );
+        }
+        catch (UnknownHostException | NoRouteToHostException routeError) {
+            createConnectionWarningPane();
+        }
     }
 
     @FXML
@@ -149,23 +162,17 @@ public class XKCDController implements Initializable {
     }
 
     private Comic makeComicRequest(String url) throws IOException {
-        try {
-            // Establish a connection to the most recent comic JSON.
-            HttpsURLConnection request = (HttpsURLConnection) new URL(url).openConnection();
-            request.setRequestProperty("User-Agent", "application/json");
-            InputStream response = request.getInputStream();
 
-            // Turn the response into a JSON object.
-            JSONObject json = new JSONObject(new String(response.readAllBytes()));
-            currentComic = new Comic(json);
-            return currentComic;
-        }
-        catch (UnknownHostException nhe) {
-            // TODO: Add warning screen to connect to Internet.
-        }
+        // Establish a connection to the most recent comic JSON.
+        HttpsURLConnection request = (HttpsURLConnection) new URL(url).openConnection();
+        request.setRequestProperty("User-Agent", "application/json");
+        InputStream response = request.getInputStream();
 
-        // If the request could not be made, return null.
-        return null;
+        // Turn the response into a JSON object.
+        JSONObject json = new JSONObject(new String(response.readAllBytes()));
+        currentComic = new Comic(json);
+        return currentComic;
+
     }
 
     private void setControllerLabels(Comic comic) {
@@ -195,6 +202,16 @@ public class XKCDController implements Initializable {
         newWindow.show();
         newWindow.setScene(fullImageView);
         fivc.setPreview(comicImageView.getImage().getUrl(), altLabel.getText());
+    }
+
+    private void createConnectionWarningPane() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("warning-screen-view.fxml"));
+        Scene warningPane = new Scene(loader.load());
+        Stage newWindow = new Stage();
+        newWindow.show();
+        newWindow.setScene(warningPane);
+        newWindow.setTitle("404 - Really Not Found");
     }
 
     public void setComicRepo(Repository comicRepo) {
