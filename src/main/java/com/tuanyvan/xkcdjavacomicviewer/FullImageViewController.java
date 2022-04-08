@@ -11,9 +11,6 @@ public class FullImageViewController {
     @FXML
     private AnchorPane anchorPane;
 
-//    @FXML
-//    private ImageView imagePreview;
-
     @FXML
     private Text altTextBox;
 
@@ -27,8 +24,6 @@ public class FullImageViewController {
                         BackgroundSize.DEFAULT
                 )
         ));
-
-//        imagePreview.setImage(new Image(imageURL));
 
         altTextBox.setText(altText);
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
@@ -21,8 +22,8 @@
          <children>
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.3333740234375" minWidth="10.0" prefWidth="320.6666615804037" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="755.3333282470703" minWidth="10.0" prefWidth="640.0000050862631" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.3333740234375" minWidth="10.0" prefWidth="352.6666666666667" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="755.3333282470703" minWidth="10.0" prefWidth="608.6666666666665" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -31,14 +32,25 @@
                <children>
                   <StackPane GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <children>
-                        <Label fx:id="lowestComicNameLabel" text="Lowest Comic Info" StackPane.alignment="BOTTOM_CENTER" />
-                        <ImageView fx:id="lowestComicImage" fitHeight="193.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER" />
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label fx:id="lowestComicNameLabel" text="Lowest Comic Info" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <ImageView fx:id="lowestComicImage" fitHeight="191.0" fitWidth="318.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           </children>
+                        </GridPane>
                      </children>
                   </StackPane>
                   <GridPane GridPane.columnIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="204.33333333333334" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="694.6665840148926" minWidth="10.0" prefWidth="435.66666666666663" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.0" minWidth="10.0" prefWidth="212.66666666666666" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="694.6665840148926" minWidth="10.0" prefWidth="396.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -46,9 +58,21 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Highest Comic ID" />
-                        <Label text="Lowest Comic ID" GridPane.rowIndex="1" />
-                        <Label text="Longest Comic Title" GridPane.rowIndex="2" />
+                        <Label text="Highest Comic ID">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Lowest Comic ID" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Longest Comic Title" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
                         <Label fx:id="highestComicIdLabel" text="Data" GridPane.columnIndex="1" />
                         <Label fx:id="lowestComicIdLabel" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="longestComicTitleLabel" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -56,8 +80,8 @@
                   </GridPane>
                   <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="368.0" minWidth="10.0" prefWidth="204.33333333333334" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="605.9999542236328" minWidth="10.0" prefWidth="435.66666666666663" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="368.0" minWidth="10.0" prefWidth="213.3333740234375" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="605.9999542236328" minWidth="10.0" prefWidth="395.99995930989576" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -66,10 +90,26 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Number of Comics" />
-                        <Label text="Sum of Comic IDs" GridPane.rowIndex="1" />
-                        <Label text="Average Comic ID" GridPane.rowIndex="2" />
-                        <Label text="Standard Deviation of Comic IDs" GridPane.rowIndex="3" />
+                        <Label text="Number of Comics">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Sum of Comic IDs" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Average Comic ID" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Standard Deviation of Comic IDs" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
                         <Label fx:id="numberOfComicsLabel" text="Data" GridPane.columnIndex="1" />
                         <Label fx:id="sumOfComicIdsLabel" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="averageComicIdLabel" text="Data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -78,13 +118,24 @@
                   </GridPane>
                   <StackPane>
                      <children>
-                        <Label fx:id="highestComicNameLabel" text="Highest Comic Info" StackPane.alignment="BOTTOM_CENTER" />
-                        <ImageView fx:id="highestComicImage" fitHeight="193.0" fitWidth="301.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER" />
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="194.6666463216146" minHeight="10.0" prefHeight="181.33333333333334" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="41.33333333333334" minHeight="10.0" prefHeight="41.33333333333334" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label fx:id="highestComicNameLabel" text="Highest Comic Info" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <ImageView fx:id="highestComicImage" fitHeight="166.0" fitWidth="318.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                           </children>
+                        </GridPane>
                      </children>
                   </StackPane>
                </children>
             </GridPane>
-            <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="255.0" text="Return To Favorite Comics" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#returnToFavoriteComics" prefHeight="55.0" prefWidth="255.0" text="Return To Favorite Comics" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

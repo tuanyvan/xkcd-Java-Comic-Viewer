@@ -1,14 +1,21 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
-public class StatisticsViewController implements Initializable {
+public class StatisticsViewController {
 
     @FXML
     private Label averageComicIdLabel;
@@ -43,14 +50,51 @@ public class StatisticsViewController implements Initializable {
     @FXML
     private Label sumOfComicIdsLabel;
 
-    private Repository currentRepo;
+    private Repository comicRepo;
 
-    public void setCurrentRepo(Repository currentRepo) {
-        this.currentRepo = currentRepo;
+    public void setCurrentRepo(Repository comicRepo) {
+        this.comicRepo = comicRepo;
+        updateFields();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void updateFields() {
+
+        ArrayList<Comic> comics = comicRepo.getComics();
+        Comic highestComic = comics.stream().max(Comparator.comparingInt(Comic::getComicID)).get();
+        Comic lowestComic = comics.stream().min(Comparator.comparingInt(Comic::getComicID)).get();
+
+        highestComicIdLabel.setText(String.valueOf(highestComic.getComicID()));
+        highestComicImage.setImage(new Image(highestComic.getImgURL()));
+        highestComicNameLabel.setText(highestComic.toString());
+
+        lowestComicIdLabel.setText(String.valueOf(lowestComic.getComicID()));
+        lowestComicImage.setImage(new Image(lowestComic.getImgURL()));
+        lowestComicNameLabel.setText(lowestComic.toString());
+
+        longestComicTitleLabel.setText(comics.stream().max(Comparator.comparingInt(o -> o.getTitle().length())).get().toString());
+
+        numberOfComicsLabel.setText(String.valueOf(comicRepo.getNumberOfComics()));
+        sumOfComicIdsLabel.setText(String.valueOf(comicRepo.getSumOfComicIDs()));
+        averageComicIdLabel.setText(String.valueOf(comicRepo.getAverageOfComicIDs()));
+        stdeviationComicIdLabel.setText(String.valueOf(comicRepo.getStandardDeviationOfComicIDs()));
 
     }
+
+    @FXML
+    public void returnToFavoriteComics(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("xkcd-repository-view.fxml"));
+
+        Scene repoViewScene = new Scene(loader.load());
+
+        Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        XKCDController XKCDController = loader.getController();
+        XKCDController.setComicRepo(comicRepo);
+
+        currentStage.setScene(repoViewScene);
+        currentStage.setTitle("Repository Statistics");
+        currentStage.show();
+    }
+
 }

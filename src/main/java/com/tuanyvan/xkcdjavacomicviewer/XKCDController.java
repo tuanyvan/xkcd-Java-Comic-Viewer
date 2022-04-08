@@ -112,21 +112,21 @@ public class XKCDController implements Initializable {
 
     @FXML
     private void openDetailedStatisticsScene(ActionEvent event) throws IOException {
+        if (comicRepo.getComics().size() != 0) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("repo-statistics-view.fxml"));
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("repo-statistics-view.fxml"));
+            Scene statViewScene = new Scene(loader.load());
 
-        Scene statViewScene = new Scene(loader.load());
+            Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            StatisticsViewController statViewController = loader.getController();
+            statViewController.setCurrentRepo(comicRepo);
 
-        StatisticsViewController statViewController = loader.getController();
-        statViewController.setCurrentRepo(comicRepo);
-
-        currentStage.setScene(statViewScene);
-        currentStage.setTitle("Repository Statistics");
-        currentStage.show();
-
+            currentStage.setScene(statViewScene);
+            currentStage.setTitle("Repository Statistics");
+            currentStage.show();
+        }
     }
 
     @FXML
@@ -194,6 +194,12 @@ public class XKCDController implements Initializable {
         newWindow.show();
         newWindow.setScene(fullImageView);
         fivc.setPreview(comicImageView.getImage().getUrl(), altLabel.getText());
+    }
+
+    public void setComicRepo(Repository comicRepo) {
+        this.comicRepo = comicRepo;
+        comicRepo.sortComics();
+        updateComicListView();
     }
 
 }
