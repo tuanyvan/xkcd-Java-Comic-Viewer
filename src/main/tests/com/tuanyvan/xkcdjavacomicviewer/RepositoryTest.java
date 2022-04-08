@@ -19,8 +19,7 @@ class RepositoryTest {
 
     private Repository loadedFromFile;
     private Repository defaultRepo;
-    private final File testJson = new File("test-repo.json");
-    private final JSONObject testJsonData = new JSONObject("{\"0\":{\"img\":\"https://imgs.xkcd.com/comics/efficiency.png\",\"month\":11,\"year\":2014,\"num\":1445,\"alt\":\"I need an extension for my research project because I spent all month trying to figure out whether learning Dvorak would help me type it faster.\",\"title\":\"Efficiency\",\"day\":10},\"1\":{\"img\":\"https://imgs.xkcd.com/comics/i_in_team.png\",\"month\":8,\"year\":2015,\"num\":1562,\"alt\":\"There's no \\\"I\\\" in \\\"VOWELS\\\".\",\"title\":\"I in Team\",\"day\":10},\"2\":{\"img\":\"https://imgs.xkcd.com/comics/google_trends_maps.png\",\"month\":3,\"year\":2019,\"num\":2126,\"alt\":\"It's early 2020. The entire country is gripped with Marco fever except for Alaska, which is freaking out. You're frantically studying up on etiquette and/or sexting.\",\"title\":\"Google Trends Maps\",\"day\":20},\"3\":{\"img\":\"https://imgs.xkcd.com/comics/childhood_toys.png\",\"month\":4,\"year\":2022,\"num\":2603,\"alt\":\"The rope keeps breaking, I'm covered in bruises and scrapes, and I've barely reached the end of my driveway, but I don't care--I'm determined to become the first person to commute to work by tetherball.\",\"title\":\"Childhood Toys\",\"day\":6}}");
+    private final JSONObject testJsonData = new JSONObject("{\"0\":{\"img\":\"https://imgs.xkcd.com/comics/elevator_inspection.png\",\"month\":5,\"year\":2011,\"num\":897,\"alt\":\"Even governmental elevator inspectors get bored halfway through asking where the building office is.\",\"title\":\"Elevator Inspection\",\"day\":11},\"1\":{\"img\":\"https://imgs.xkcd.com/comics/cloud.png\",\"month\":11,\"year\":2014,\"num\":1444,\"alt\":\"Cloud computing has a ways to go.\",\"title\":\"Cloud\",\"day\":7},\"2\":{\"img\":\"https://imgs.xkcd.com/comics/efficiency.png\",\"month\":11,\"year\":2014,\"num\":1445,\"alt\":\"I need an extension for my research project because I spent all month trying to figure out whether learning Dvorak would help me type it faster.\",\"title\":\"Efficiency\",\"day\":10},\"3\":{\"img\":\"https://imgs.xkcd.com/comics/squirrel_plan.png\",\"month\":3,\"year\":2015,\"num\":1503,\"alt\":\"[Halfway to the Sun ...] Heyyyy ... what if this BALLOON is full of acorns?!\",\"title\":\"Squirrel Plan\",\"day\":25},\"4\":{\"img\":\"https://imgs.xkcd.com/comics/i_in_team.png\",\"month\":8,\"year\":2015,\"num\":1562,\"alt\":\"There's no \\\"I\\\" in \\\"VOWELS\\\".\",\"title\":\"I in Team\",\"day\":10},\"5\":{\"img\":\"https://imgs.xkcd.com/comics/frankenstein_captcha.png\",\"month\":4,\"year\":2022,\"num\":2604,\"alt\":\"The distinction between a ship and a boat is a line drawn in water.\",\"title\":\"Frankenstein Captcha\",\"day\":8}}");
 
     @BeforeEach
     void setUp() {
@@ -51,31 +50,35 @@ class RepositoryTest {
 
     @Test
     void getSumOfComicIDs() {
-        assertEquals(7736, loadedFromFile.getSumOfComicIDs());
+        assertEquals(9455, loadedFromFile.getSumOfComicIDs());
     }
 
     @Test
     void getAverageOfComicIDs() {
-        assertEquals(1934.0, loadedFromFile.getAverageOfComicIDs());
+        assertEquals(1575.83, loadedFromFile.getAverageOfComicIDs());
     }
 
     @Test
     void getStandardDeviationOfComicIDs() {
 
-        assertEquals(464.20, loadedFromFile.getStandardDeviationOfComicIDs());
+        assertEquals(509.56, loadedFromFile.getStandardDeviationOfComicIDs());
     }
 
     @Test
     void sortComics() {
-        Comic firstComic = new Comic((JSONObject) testJsonData.get("0")); // ID 1445
-        Comic secondComic = new Comic((JSONObject) testJsonData.get("1")); // ID 1562
-        Comic thirdComic = new Comic((JSONObject) testJsonData.get("2")); // ID 2126
-        Comic fourthComic = new Comic((JSONObject) testJsonData.get("3")); // ID 2603
+        Comic firstComic = new Comic((JSONObject) testJsonData.get("0")); // ID 897
+        Comic secondComic = new Comic((JSONObject) testJsonData.get("1")); // ID 1444
+        Comic thirdComic = new Comic((JSONObject) testJsonData.get("2")); // ID 1445
+        Comic fourthComic = new Comic((JSONObject) testJsonData.get("3")); // ID 1503
+        Comic fifthComic = new Comic((JSONObject) testJsonData.get("4")); // ID 1562
+        Comic sixthComic = new Comic((JSONObject) testJsonData.get("5")); // ID 2604
 
         // Adding elements using unintended procedure.
         defaultRepo.getComics().add(secondComic);
+        defaultRepo.getComics().add(fifthComic);
         defaultRepo.getComics().add(firstComic);
         defaultRepo.getComics().add(fourthComic);
+        defaultRepo.getComics().add(sixthComic);
         defaultRepo.getComics().add(thirdComic);
 
         // Call the sort and compare it to loadedFromFile, which is sorted.
@@ -86,14 +89,18 @@ class RepositoryTest {
 
     @Test
     void addToComics() {
-        Comic firstComic = new Comic((JSONObject) testJsonData.get("0")); // ID 1445
-        Comic secondComic = new Comic((JSONObject) testJsonData.get("1")); // ID 1562
-        Comic thirdComic = new Comic((JSONObject) testJsonData.get("2")); // ID 2126
-        Comic fourthComic = new Comic((JSONObject) testJsonData.get("3")); // ID 2603
+        Comic firstComic = new Comic((JSONObject) testJsonData.get("0")); // ID 897
+        Comic secondComic = new Comic((JSONObject) testJsonData.get("1")); // ID 1444
+        Comic thirdComic = new Comic((JSONObject) testJsonData.get("2")); // ID 1445
+        Comic fourthComic = new Comic((JSONObject) testJsonData.get("3")); // ID 1503
+        Comic fifthComic = new Comic((JSONObject) testJsonData.get("4")); // ID 1562
+        Comic sixthComic = new Comic((JSONObject) testJsonData.get("5")); // ID 2604
 
-        // Again, placing comics in the wrong order, which will be sorted out in this function.
+        // Again, placing comics in the wrong order, which will be sorted automatically using this function.
         defaultRepo.addToComics(secondComic);
         defaultRepo.addToComics(firstComic);
+        defaultRepo.addToComics(fifthComic);
+        defaultRepo.addToComics(sixthComic);
         defaultRepo.addToComics(fourthComic);
         defaultRepo.addToComics(thirdComic);
 
@@ -104,7 +111,7 @@ class RepositoryTest {
     void removeFromComics() {
 
         // We will need to clone instances of the objects we are deleting since iterating through an ArrayList as we delete items causes ConcurrentModfiicationException.
-        Object[] clonedData = Arrays.copyOf(loadedFromFile.getComics().toArray(), 4);
+        Object[] clonedData = Arrays.copyOf(loadedFromFile.getComics().toArray(), testJsonData.length());
         ArrayList<Comic> tempComics = new ArrayList<Comic>();
         for (Object comic : clonedData) {
             tempComics.add((Comic) comic);
