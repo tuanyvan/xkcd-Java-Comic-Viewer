@@ -189,7 +189,7 @@
                                        <children>
                                           <Button layoutX="13.0" layoutY="37.0" mnemonicParsing="false" onAction="#addComic" prefHeight="25.0" prefWidth="111.0" text="Add" />
                                           <Button layoutX="13.0" layoutY="72.0" mnemonicParsing="false" onAction="#deleteComic" prefHeight="25.0" prefWidth="111.0" text="Delete" />
-                                          <Button layoutX="13.0" layoutY="107.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="Statistics" />
+                                          <Button layoutX="13.0" layoutY="107.0" mnemonicParsing="false" onAction="#openDetailedStatisticsScene" prefHeight="25.0" prefWidth="111.0" text="Statistics" />
                                        </children>
                                     </AnchorPane>
                                     <GridPane GridPane.rowIndex="1">

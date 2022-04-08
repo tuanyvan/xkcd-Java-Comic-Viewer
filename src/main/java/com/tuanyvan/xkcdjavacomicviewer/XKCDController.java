@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -110,8 +111,22 @@ public class XKCDController implements Initializable {
     }
 
     @FXML
-    private void openDetailedStatisticsScene(ActionEvent event) {
-        // TODO: Add detailed statistics scene.
+    private void openDetailedStatisticsScene(ActionEvent event) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("repo-statistics-view.fxml"));
+
+        Scene statViewScene = new Scene(loader.load());
+
+        Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        StatisticsViewController statViewController = loader.getController();
+        statViewController.setCurrentRepo(comicRepo);
+
+        currentStage.setScene(statViewScene);
+        currentStage.setTitle("Repository Statistics");
+        currentStage.show();
+
     }
 
     @FXML
