@@ -1,6 +1,7 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Repository {
 
@@ -45,9 +46,14 @@ public class Repository {
         return comics.stream().reduce(0.0, (sum, currentComic) -> sum + Math.pow(currentComic.getComicID() + averageComicId, 2), Double::sum) / getNumberOfComics();
     }
 
+    private void sortComics() {
+        getComics().sort(Comparator.comparingInt(Comic::getComicID));
+    }
+
     public boolean addToComics(Comic comic) {
         if (this.getComics().stream().noneMatch((c) -> c.getComicID() == comic.getComicID())) {
             this.getComics().add(comic);
+            sortComics();
             return true;
         }
         else {
@@ -58,6 +64,7 @@ public class Repository {
     public boolean removeFromComics(Comic comic) {
         if (this.getComics().contains(comic)) {
             this.getComics().remove(comic);
+            sortComics();
             return true;
         }
         else {

@@ -106,7 +106,6 @@ public class XKCDController implements Initializable {
     }
 
     private void updateComicListView() {
-        comicRepo.getComics().sort(Comparator.comparingInt(Comic::getComicID));
         comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
     }
 
