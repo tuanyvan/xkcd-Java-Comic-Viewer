@@ -97,10 +97,9 @@ public class XKCDController implements Initializable {
                 JSONObject jsonData =
                         new JSONObject(
                             new String(
-                                    Files.readAllBytes(
-                                            Path.of(String.valueOf(json)
-                                            )
-                                    )
+                                Files.readAllBytes(
+                                        Path.of(String.valueOf(json))
+                                )
                             )
                         );
                 comicRepo = new Repository(jsonData);

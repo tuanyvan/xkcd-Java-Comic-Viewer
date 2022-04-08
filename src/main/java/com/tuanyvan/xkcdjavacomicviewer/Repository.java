@@ -11,17 +11,16 @@ public class Repository {
     private ArrayList<Comic> comics;
 
     public Repository() {
-        this.comics = new ArrayList<Comic>();
+        setComics(new ArrayList<Comic>());
     }
 
     public Repository(JSONObject json) {
-        this.comics = new ArrayList<Comic>();
-
+        ArrayList<Comic> jsonComics = new ArrayList<>();
         for (Iterator<String> it = json.keys(); it.hasNext(); ) {
             JSONObject entry = (JSONObject) json.get(it.next());
-            this.comics.add(new Comic(entry));
+            jsonComics.add(new Comic(entry));
         }
-
+        setComics(jsonComics);
     }
 
     public ArrayList<Comic> getComics() {
@@ -48,14 +47,16 @@ public class Repository {
     public double getStandardDeviationOfComicIDs() {
         double averageComicId = getAverageOfComicIDs();
         return
-                Math.round(
-                    Math.sqrt(
-                        comics.stream().reduce(
-                                0.0,
-                                (sum, currentComic) -> sum + Math.pow(currentComic.getComicID() + averageComicId, 2),
-                                Double::sum)
-                                / getNumberOfComics()
-                    ) * 100.0) / 100.0;
+                Math.round(Math.sqrt(
+                        getComics()
+                                .stream()
+                                .reduce(
+                                    0.0,
+                                    (sum, comic) -> sum + Math.pow(comic.getComicID() - averageComicId, 2),
+                                    Double::sum
+                                )
+                        / getNumberOfComics()
+                ) * 100.0) / 100.0;
     }
 
     public void sortComics() {
