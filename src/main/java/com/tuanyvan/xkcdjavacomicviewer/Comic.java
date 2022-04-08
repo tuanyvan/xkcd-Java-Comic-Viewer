@@ -113,6 +113,16 @@ public class Comic {
         return length == 1 ? duration : duration + "s";
     }
 
+    public JSONObject getJSON() {
+        JSONObject json = new JSONObject();
+        json.put("title", getTitle());
+        json.put("altText", getAltText());
+        json.put("publishedDate", getPublishedDate());
+        json.put("comicId", getComicID());
+        json.put("imgURL", getImgURL());
+        return json;
+    }
+
     @Override
     public String toString() {
         return String.format("Comic #%d - %s", getComicID(), getTitle());

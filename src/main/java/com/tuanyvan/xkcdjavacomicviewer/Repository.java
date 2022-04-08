@@ -1,5 +1,7 @@
 package com.tuanyvan.xkcdjavacomicviewer;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -23,6 +25,7 @@ public class Repository {
     public void setComics(ArrayList<Comic> comics, File status) {
         if(comics.size() != 0 || status == File.NOT_USED) {
             this.comics = comics;
+            this.sortComics();
         }
         else {
             throw new IllegalArgumentException("The only time `comics` can be set to an empty list is when no output file could be read.");
@@ -70,6 +73,14 @@ public class Repository {
             this.getComics().remove(comic);
             sortComics();
         }
+    }
+
+    public JSONObject getJSON() {
+        JSONObject json = new JSONObject();
+        for (int i = 0; i < getComics().size(); i++) {
+            json.put(Integer.toString(i), this.getComics().get(i).getJSON());
+        }
+        return json;
     }
 
 }

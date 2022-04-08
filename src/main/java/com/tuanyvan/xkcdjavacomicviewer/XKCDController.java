@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.NoRouteToHostException;
@@ -75,7 +76,7 @@ public class XKCDController implements Initializable {
             try {
                 createConnectionWarningPane();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                System.out.println("The file, warning-screen-view.fxml, could not be loaded. Please check the integrity of the program's files.");
             }
         }
 
@@ -121,7 +122,15 @@ public class XKCDController implements Initializable {
     }
 
     private void updateComicListView() {
-        comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
+        try {
+            comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
+            FileWriter comicRepoFile = new FileWriter("comic-repo.json");
+            comicRepoFile.write(comicRepo.getJSON().toString());
+            comicRepoFile.close();
+        }
+        catch (IOException ioe) {
+            System.out.println("The program could not write to comic-repo.json. Please check the administrative rights for this program.");
+        }
     }
 
     @FXML
@@ -170,12 +179,12 @@ public class XKCDController implements Initializable {
 
         // Turn the response into a JSON object.
         JSONObject json = new JSONObject(new String(response.readAllBytes()));
-        currentComic = new Comic(json);
-        return currentComic;
+        return new Comic(json);
 
     }
 
     private void setControllerLabels(Comic comic) {
+        currentComic = comic;
         comicIdLabel.setText("#" + comic.getComicID());
         titleLabel.setText(comic.getTitle());
         altLabel.setText(comic.getAltText());
@@ -215,8 +224,7 @@ public class XKCDController implements Initializable {
     }
 
     public void setComicRepo(Repository comicRepo) {
-        this.comicRepo = comicRepo;
-        comicRepo.sortComics();
+        this.comicRepo.setComics(comicRepo.getComics(), Repository.File.NOT_USED);
         updateComicListView();
     }
 
