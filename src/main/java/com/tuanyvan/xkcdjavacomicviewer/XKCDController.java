@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.awt.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,8 @@ import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
@@ -65,6 +68,11 @@ public class XKCDController implements Initializable {
     private Comic currentComic;
     private Repository comicRepo;
 
+    enum FileInstructions {
+        WRITE,
+        BYPASS
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -80,8 +88,32 @@ public class XKCDController implements Initializable {
             }
         }
 
-        comicRepo = new Repository(new ArrayList<Comic>());
-        updateComicListView();
+        File json = new File("comic-repo.json");
+        if (json.isFile()) {
+
+            ArrayList<Comic> comics = new ArrayList<>();
+
+            try {
+                JSONObject jsonData =
+                        new JSONObject(
+                            new String(
+                                    Files.readAllBytes(
+                                            Path.of(String.valueOf(json)
+                                            )
+                                    )
+                            )
+                        );
+                comicRepo = new Repository(jsonData);
+                updateComicRepo(FileInstructions.BYPASS);
+            } catch (IOException e) {
+                comicRepo = new Repository();
+                System.out.println("The file, comic-repo.json, could not be read. Please check the administrative rights of this program.");
+            }
+
+        }
+        else {
+            comicRepo = new Repository();
+        }
 
     }
 
@@ -112,21 +144,23 @@ public class XKCDController implements Initializable {
     @FXML
     private void addComic(ActionEvent event) {
         comicRepo.addToComics(currentComic);
-        updateComicListView();
+        updateComicRepo(FileInstructions.WRITE);
     }
 
     @FXML
     private void deleteComic(ActionEvent event) {
         comicRepo.removeFromComics(comicListView.getSelectionModel().getSelectedItem());
-        updateComicListView();
+        updateComicRepo(FileInstructions.WRITE);
     }
 
-    private void updateComicListView() {
+    private void updateComicRepo(FileInstructions instruction) {
         try {
             comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
-            FileWriter comicRepoFile = new FileWriter("comic-repo.json");
-            comicRepoFile.write(comicRepo.getJSON().toString());
-            comicRepoFile.close();
+            if (instruction == FileInstructions.WRITE) {
+                FileWriter comicRepoFile = new FileWriter("comic-repo.json");
+                comicRepoFile.write(comicRepo.getJSON().toString());
+                comicRepoFile.close();
+            }
         }
         catch (IOException ioe) {
             System.out.println("The program could not write to comic-repo.json. Please check the administrative rights for this program.");
@@ -225,7 +259,7 @@ public class XKCDController implements Initializable {
 
     public void setComicRepo(Repository comicRepo) {
         this.comicRepo.setComics(comicRepo.getComics());
-        updateComicListView();
+        updateComicRepo(FileInstructions.BYPASS);
     }
 
     @FXML

@@ -116,10 +116,12 @@ public class Comic {
     public JSONObject getJSON() {
         JSONObject json = new JSONObject();
         json.put("title", getTitle());
-        json.put("altText", getAltText());
-        json.put("publishedDate", getPublishedDate());
-        json.put("comicId", getComicID());
-        json.put("imgURL", getImgURL());
+        json.put("alt", getAltText());
+        json.put("year", getPublishedDate().getYear());
+        json.put("month", getPublishedDate().getMonth().getValue());
+        json.put("day", getPublishedDate().getDayOfMonth());
+        json.put("num", getComicID());
+        json.put("img", getImgURL());
         return json;
     }
 

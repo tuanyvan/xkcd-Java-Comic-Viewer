@@ -4,13 +4,24 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 public class Repository {
 
     private ArrayList<Comic> comics;
 
-    public Repository(ArrayList<Comic> comics) {
-        setComics(comics);
+    public Repository() {
+        this.comics = new ArrayList<Comic>();
+    }
+
+    public Repository(JSONObject json) {
+        this.comics = new ArrayList<Comic>();
+
+        for (Iterator<String> it = json.keys(); it.hasNext(); ) {
+            JSONObject entry = (JSONObject) json.get(it.next());
+            this.comics.add(new Comic(entry));
+        }
+
     }
 
     public ArrayList<Comic> getComics() {
