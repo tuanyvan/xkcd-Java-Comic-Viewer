@@ -161,7 +161,7 @@
                                     <RowConstraints maxHeight="411.0" minHeight="10.0" prefHeight="393.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <ListView fx:id="comicListView" prefWidth="243.0" GridPane.rowIndex="1">
+                                    <ListView fx:id="comicListView" onMouseClicked="#renderSelectedComic" prefWidth="243.0" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets bottom="20.0" left="20.0" right="20.0" />
                                        </GridPane.margin>

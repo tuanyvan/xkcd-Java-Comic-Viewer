@@ -27,6 +27,7 @@ import java.time.format.FormatStyle;
 import java.util.*;
 import java.util.function.Predicate;
 
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.json.JSONObject;
@@ -188,7 +189,7 @@ public class XKCDController implements Initializable {
         loader.setLocation(getClass().getResource("full-image-view.fxml"));
         Scene fullImageView = new Scene(loader.load(), comicImageView.getImage().getWidth() * 2, comicImageView.getImage().getHeight() * 2);
 
-        Stage newWindow = new Stage(StageStyle.DECORATED);
+        Stage newWindow = new Stage();
         newWindow.setTitle(String.format("%s - %s", comicIdLabel.getText(), titleLabel.getText()));
         FullImageViewController fivc = loader.getController();
         newWindow.show();
@@ -200,6 +201,14 @@ public class XKCDController implements Initializable {
         this.comicRepo = comicRepo;
         comicRepo.sortComics();
         updateComicListView();
+    }
+
+    @FXML
+    public void renderSelectedComic(MouseEvent event) {
+        if (comicListView.getSelectionModel().getSelectedItem() != null) {
+            Comic selectedComic = comicListView.getSelectionModel().getSelectedItem();
+            setControllerLabels(selectedComic);
+        }
     }
 
 }
