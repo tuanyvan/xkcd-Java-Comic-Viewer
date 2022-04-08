@@ -80,7 +80,7 @@ public class XKCDController implements Initializable {
             }
         }
 
-        comicRepo = new Repository(new ArrayList<Comic>(), Repository.File.NOT_USED);
+        comicRepo = new Repository(new ArrayList<Comic>());
         updateComicListView();
 
     }
@@ -224,7 +224,7 @@ public class XKCDController implements Initializable {
     }
 
     public void setComicRepo(Repository comicRepo) {
-        this.comicRepo.setComics(comicRepo.getComics(), Repository.File.NOT_USED);
+        this.comicRepo.setComics(comicRepo.getComics());
         updateComicListView();
     }
 

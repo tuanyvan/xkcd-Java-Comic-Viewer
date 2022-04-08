@@ -7,29 +7,19 @@ import java.util.Comparator;
 
 public class Repository {
 
-    enum File {
-        NOT_USED,
-        READ
-    }
-
     private ArrayList<Comic> comics;
 
-    public Repository(ArrayList<Comic> comics, File status) {
-        setComics(comics, status);
+    public Repository(ArrayList<Comic> comics) {
+        setComics(comics);
     }
 
     public ArrayList<Comic> getComics() {
         return this.comics;
     }
 
-    public void setComics(ArrayList<Comic> comics, File status) {
-        if(comics.size() != 0 || status == File.NOT_USED) {
-            this.comics = comics;
-            this.sortComics();
-        }
-        else {
-            throw new IllegalArgumentException("The only time `comics` can be set to an empty list is when no output file could be read.");
-        }
+    public void setComics(ArrayList<Comic> comics) {
+        this.comics = comics;
+        this.sortComics();
     }
 
     public int getNumberOfComics() {
