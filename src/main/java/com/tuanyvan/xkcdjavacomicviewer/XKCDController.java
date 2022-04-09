@@ -38,9 +38,6 @@ import org.json.JSONObject;
 public class XKCDController implements Initializable {
 
     @FXML
-    private Label altLabel;
-
-    @FXML
     private ImageView comicImageView;
 
     @FXML
@@ -263,7 +260,6 @@ public class XKCDController implements Initializable {
         currentComic = comic;
         comicIdLabel.setText("#" + comic.getComicID());
         titleLabel.setText(comic.getTitle());
-        altLabel.setText(comic.getAltText());
         dateCreatedLabel.setText(
                 String.format(
                         "%s (%s)",
@@ -280,13 +276,13 @@ public class XKCDController implements Initializable {
     private void createLargePreviewPane(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("full-image-view.fxml"));
-        Scene fullImageView = new Scene(loader.load(), comicImageView.getImage().getWidth() * 2, comicImageView.getImage().getHeight() * 2);
+        Scene fullImageView = new Scene(loader.load());
 
         Stage newWindow = new Stage();
         newWindow.setTitle(String.format("%s - %s", comicIdLabel.getText(), titleLabel.getText()));
         FullImageViewController fivc = loader.getController();
         newWindow.setScene(fullImageView);
-        fivc.setPreview(comicImageView.getImage().getUrl(), altLabel.getText());
+        fivc.setPreview(comicImageView.getImage().getUrl(), currentComic.getAltText());
         newWindow.show();
     }
 
