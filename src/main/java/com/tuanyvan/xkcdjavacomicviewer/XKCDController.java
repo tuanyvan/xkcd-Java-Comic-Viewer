@@ -68,6 +68,9 @@ public class XKCDController implements Initializable {
     private Comic currentComic;
     private Repository comicRepo;
 
+    /**
+     * Defines instructions for updateComicRepo() and determines if it needs to write to a .json file.
+     */
     enum FileInstructions {
         WRITE,
         BYPASS
@@ -76,6 +79,7 @@ public class XKCDController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        // Get the latest comic using the default JSON endpoint.
         try {
             processRequest("https://xkcd.com/info.0.json");
             newestComicId = currentComic.getComicID(); // Track the upper bound for the random comic generator.
@@ -88,6 +92,7 @@ public class XKCDController implements Initializable {
             }
         }
 
+        // If comic-repo.json exists, use that to fill the contents in the comicListView.
         File json = new File("comic-repo.json");
         if (json.isFile()) {
 
@@ -108,20 +113,29 @@ public class XKCDController implements Initializable {
                 comicRepo = new Repository();
                 System.out.println("The file, comic-repo.json, could not be read. Please check the administrative rights of this program.");
             }
-
         }
+        // Otherwise, instantiate an empty Repository.
         else {
             comicRepo = new Repository();
         }
 
     }
 
+    /**
+     * Uses the various functions to fetch a comic's JSON and set the appropriate labels.
+     * @param url   The URL pointing to the comic's JSON endpoint.
+     */
     private void processRequest(String url) throws IOException {
         setControllerLabels(Objects.requireNonNull(makeComicRequest(url)));
     }
 
+    /**
+     * Generates a random comic from IDs 1 to the second-latest comic.
+     * @throws IOException  If the user's network refuses or fails to connect to the JSON endpoint.
+     */
     @FXML
     private void generateRandomComicButton(ActionEvent event) throws IOException {
+        // Try generating a random comic, catch any network-related errors.
         try {
             Random rng = new Random();
             processRequest(
@@ -135,31 +149,46 @@ public class XKCDController implements Initializable {
         }
     }
 
+    /**
+     * Used by the comicURL Hyperlink to open the comic in the user's default browser.
+     */
     @FXML
     private void openInBrowser(ActionEvent event) throws IOException {
         Desktop.getDesktop().browse(URI.create(comicURL.getText()));
     }
 
+    /**
+     * Add the comic to the Repository object and write to a .json file.
+     */
     @FXML
     private void addComic(ActionEvent event) {
         comicRepo.addToComics(currentComic);
         updateComicRepo(FileInstructions.WRITE);
     }
 
+    /**
+     * Delete the currently selected comic from the Repository object and write to a .json file.
+     */
     @FXML
     private void deleteComic(ActionEvent event) {
         comicRepo.removeFromComics(comicListView.getSelectionModel().getSelectedItem());
         updateComicRepo(FileInstructions.WRITE);
     }
 
+    /**
+     * Updates the comicListView to the altered comicRepo ArrayList.
+     * @param instruction   When passed as FileInstructions.WRITE, writes to a file called comic-repo.json.
+     */
     private void updateComicRepo(FileInstructions instruction) {
         try {
             comicListView.setItems(FXCollections.observableArrayList(comicRepo.getComics()));
+            // If the enum FileInstructions.WRITE was passed, then write to comic-repo.json.
             if (instruction == FileInstructions.WRITE) {
                 FileWriter comicRepoFile = new FileWriter("comic-repo.json");
                 comicRepoFile.write(comicRepo.getJSON().toString());
                 comicRepoFile.close();
             }
+
         }
         catch (IOException ioe) {
             System.out.println("The program could not write to comic-repo.json. Please check the administrative rights for this program.");
@@ -168,6 +197,7 @@ public class XKCDController implements Initializable {
 
     @FXML
     private void openDetailedStatisticsScene(ActionEvent event) throws IOException {
+        // Do not allow operation to go through if there are no comics in comicRepo.
         if (comicRepo.getComics().size() != 0) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("repo-statistics-view.fxml"));
@@ -185,6 +215,9 @@ public class XKCDController implements Initializable {
         }
     }
 
+    /**
+     * Searches a comic by ID based on user input.
+     */
     @FXML
     private void handleComicSearch(ActionEvent event) {
         try {
@@ -203,6 +236,12 @@ public class XKCDController implements Initializable {
         }
     }
 
+    /**
+     * Makes a request to the specified URL.
+     * @param url   The JSON endpoint to interface with.
+     * @return  The JSON object returned from the url endpoint.
+     * @throws IOException  If the user fails/refuses to connect to the URL endpoint.
+     */
     private Comic makeComicRequest(String url) throws IOException {
 
         // Establish a connection to the most recent comic JSON.
@@ -216,6 +255,10 @@ public class XKCDController implements Initializable {
 
     }
 
+    /**
+     * Sets the comic information labels and sets the currentComic.
+     * @param comic The Comic object to set the information labels to.
+     */
     private void setControllerLabels(Comic comic) {
         currentComic = comic;
         comicIdLabel.setText("#" + comic.getComicID());
@@ -224,6 +267,7 @@ public class XKCDController implements Initializable {
         dateCreatedLabel.setText(
                 String.format(
                         "%s (%s)",
+                        // Get the date in a localized format, such as "Friday, April 8th, 2022".
                         comic.getPublishedDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)),
                         comic.getTimeSincePublication()
                 )
@@ -256,11 +300,18 @@ public class XKCDController implements Initializable {
         newWindow.show();
     }
 
+    /**
+     * Used by StatisticsViewController to pass the Repository object back to this controller.
+     * @param comicRepo The Repository object being passed back.
+     */
     public void setComicRepo(Repository comicRepo) {
         this.comicRepo.setComics(comicRepo.getComics());
         updateComicRepo(FileInstructions.BYPASS);
     }
 
+    /**
+     * Changes the current comic and information labels based on a selection in the comicListView.
+     */
     @FXML
     public void renderSelectedComic(MouseEvent event) {
         if (comicListView.getSelectionModel().getSelectedItem() != null) {
