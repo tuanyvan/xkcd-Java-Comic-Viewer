@@ -29,6 +29,7 @@ class RepositoryTest {
 
     @Test
     void getComics() {
+        // If adding the comics using ArrayList's .add() makes changes retrievable from getComic(), then it works.
         for (int i = 0; i < testJsonData.length(); i++) {
             JSONObject data = (JSONObject) testJsonData.get(Integer.toString(i));
             defaultRepo.getComics().add(new Comic(data));
@@ -66,6 +67,7 @@ class RepositoryTest {
 
     @Test
     void sortComics() {
+        // Fetch all the comics in the testJsonData.
         Comic firstComic = new Comic((JSONObject) testJsonData.get("0")); // ID 897
         Comic secondComic = new Comic((JSONObject) testJsonData.get("1")); // ID 1444
         Comic thirdComic = new Comic((JSONObject) testJsonData.get("2")); // ID 1445

@@ -56,6 +56,7 @@ class ComicTest {
 
     @Test
     void getTimeSincePublication() {
+        // Time diff will contain all three fields.
         String premadeTSP = premadeComic.getTimeSincePublication();
         Period premadeTimeDiff = Period.between(premadeComic.getPublishedDate(), today);
 
@@ -87,8 +88,11 @@ class ComicTest {
 
     @Test
     void lessThanAYearSincePublication() {
+        // Make a JSONObject where the year diff is 0.
         JSONObject plusAYear = new JSONObject(premadeJSON.toString());
         plusAYear.put("year", today.getYear());
+
+        // Make a JSONObject where the year and month diff is 0.
         JSONObject plusAMonth = new JSONObject(plusAYear.toString());
         plusAMonth.put("month", today.getMonth().getValue());
 
@@ -120,7 +124,6 @@ class ComicTest {
 
     @Test
     void setInavlidImgURI() {
-
         // Invalid protocols and URL formats are not allowed.
         Assertions.assertThrows(
             IllegalArgumentException.class,
