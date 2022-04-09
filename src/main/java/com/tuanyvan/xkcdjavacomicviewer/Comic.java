@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class Comic {
 
-    // The user never changes any of these
+    // The user never changes most of these fields. They are parsed as-is from the JSON payload.
     private final String title;
     private final String altText;
     private final LocalDate publishedDate;
