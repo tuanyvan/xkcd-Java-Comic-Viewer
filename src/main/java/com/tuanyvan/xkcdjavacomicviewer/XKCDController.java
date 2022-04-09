@@ -281,6 +281,7 @@ public class XKCDController implements Initializable {
         Stage newWindow = new Stage();
         newWindow.setTitle(String.format("%s - %s", comicIdLabel.getText(), titleLabel.getText()));
         FullImageViewController fivc = loader.getController();
+        newWindow.getIcons().add(new Image(String.valueOf(XKCDApplication.class.getResource("img/logo.png"))));
         newWindow.setScene(fullImageView);
         fivc.setPreview(comicImageView.getImage().getUrl(), currentComic.getAltText());
         newWindow.show();
@@ -292,6 +293,7 @@ public class XKCDController implements Initializable {
         Scene warningPane = new Scene(loader.load());
         Stage newWindow = new Stage();
         newWindow.setScene(warningPane);
+        newWindow.getIcons().add(new Image(String.valueOf(XKCDApplication.class.getResource("img/logo.png"))));
         newWindow.setTitle("500 - Internet Not Found");
         newWindow.show();
     }

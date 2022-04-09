@@ -104,7 +104,7 @@ public class StatisticsViewController {
         XKCDController.setComicRepo(comicRepo);
 
         currentStage.setScene(repoViewScene);
-        currentStage.setTitle("Repository Statistics");
+        currentStage.setTitle("xkcd Comic Viewer");
         currentStage.show();
     }
 
