@@ -3,7 +3,6 @@ package com.tuanyvan.xkcdjavacomicviewer;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 public class FullImageViewController {
