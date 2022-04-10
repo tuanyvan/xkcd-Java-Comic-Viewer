@@ -13,10 +13,10 @@ import java.util.HashMap;
 public class Comic {
 
     // The user never changes most of these fields. They are parsed as-is from the JSON payload.
-    private final String title;
-    private final String altText;
-    private final LocalDate publishedDate;
-    private final int comicID;
+    private String title;
+    private String altText;
+    private LocalDate publishedDate;
+    private int comicID;
     private String imgURL;
 
     /**
@@ -24,8 +24,8 @@ public class Comic {
      * @param json  The JSON object containing information about the Comic.
      */
     public Comic(JSONObject json) {
-        title = json.get("title").toString();
-        altText = json.get("alt").toString();
+        setTitle(json.get("title").toString());
+        setAltText(json.get("alt").toString());
 
         // Publication date held in three different fields. We can get them to instantiate a LocalDate class.
         HashMap<String, Integer> date = new HashMap<>();
@@ -33,16 +33,15 @@ public class Comic {
         date.put("month", Integer.valueOf(json.get("month").toString()));
         date.put("day", Integer.valueOf(json.get("day").toString()));
 
-        publishedDate = LocalDate.of(date.get("year"), date.get("month"), date.get("day"));
+        setPublishedDate(LocalDate.of(date.get("year"), date.get("month"), date.get("day")));
 
-        comicID = (int) json.get("num");
+        setComicID((int) json.get("num"));
 
         // Use setImgURL to ensure the passed JSON image URL is valid.
         setImgURL(json.get("img").toString());
     }
 
     // Getters
-
     /**
      * @return  The title of the comic as a String.
      */
@@ -78,8 +77,7 @@ public class Comic {
         return imgURL;
     }
 
-    // Setters
-
+    // Setters (users should never have to use these)
     /**
      * Verifies the integrity and validity of the image URL using Apache Commons' validators.
      * @param imgURL    The URL to the comic's image.
@@ -104,6 +102,54 @@ public class Comic {
             throw new IllegalArgumentException("The provided URL was improperly formatted.");
         }
 
+    }
+
+    /**
+     * @param title A string that is at least one character long.
+     */
+    public void setTitle(String title) {
+        if (title.length() >= 1) {
+            this.title = title;
+        }
+        else {
+            throw new IllegalArgumentException("The comic's title is too short for an official comic. It must be at least one character.");
+        }
+    }
+
+    /**
+     * @param altText A string that is at least one character long.
+     */
+    public void setAltText(String altText) {
+        if (altText.length() >= 1) {
+            this.altText = altText;
+        }
+        else {
+            throw new IllegalArgumentException("The comic's alt text is too short for an official comic.");
+        }
+    }
+
+    /**
+     * @param date A LocalDate object that is not in the future.
+     */
+    public void setPublishedDate(LocalDate date) {
+        if (date.isBefore(LocalDate.now())) {
+            this.publishedDate = date;
+        }
+        else {
+            throw new IllegalArgumentException("This comic's publish date takes place in the future, which is impossible in our timeline.");
+        }
+    }
+
+    /**
+     * @param id An int that is at least one.
+     */
+    public void setComicID(int id) {
+        if (id >= 1) {
+            this.comicID = id;
+        }
+        else {
+            throw new IllegalArgumentException("This comic's ID must be more than zero.");
+        }
     }
 
     // Custom Methods

@@ -172,4 +172,27 @@ class ComicTest {
         // The comic's JSON should be identical to the JSON that was first passed into it.
         assertEquals(premadeJSON.toString(), premadeComic.getJSON().toString());
     }
+
+    // Testing sets using faulty input.
+    @Test
+    void setInvalidComicID() {
+        assertThrows(IllegalArgumentException.class, () -> premadeComic.setComicID(-300));
+    }
+
+    @Test
+    void setInvalidTitle() {
+        assertThrows(IllegalArgumentException.class, () -> premadeComic.setTitle(""));
+    }
+
+    @Test
+    void setInvalidAltText() {
+        assertThrows(IllegalArgumentException.class, () -> premadeComic.setAltText(""));
+    }
+
+    @Test
+    void setInvalidPublishedDate() {
+        // 10 years into the future is impossible everytime.
+        LocalDate fakeDate = LocalDate.now().plusYears(10);
+        assertThrows(IllegalArgumentException.class, () -> premadeComic.setPublishedDate(fakeDate));
+    }
 }
