@@ -10,11 +10,16 @@ public class Repository {
 
     private ArrayList<Comic> comics;
 
+    enum InitializeType {
+        FROM_OBJECT,
+        EMPTY
+    }
+
     /**
      * The default constructor which creates an empty ArrayList<Comic> for the comics field.
      */
     public Repository() {
-        setComics(new ArrayList<Comic>());
+        setComics(new ArrayList<>(), InitializeType.EMPTY);
     }
 
     /**
@@ -25,9 +30,10 @@ public class Repository {
         ArrayList<Comic> jsonComics = new ArrayList<>();
         for (Iterator<String> it = json.keys(); it.hasNext(); ) {
             JSONObject entry = (JSONObject) json.get(it.next());
+            // Comics validated as they are added from the JSON object.
             jsonComics.add(new Comic(entry));
         }
-        setComics(jsonComics);
+        setComics(jsonComics, InitializeType.FROM_OBJECT);
     }
 
     /**
@@ -41,9 +47,14 @@ public class Repository {
      * Sets the comics field and sorts it.
      * @param comics    The ArrayList<Comic> to set comics to.
      */
-    public void setComics(ArrayList<Comic> comics) {
-        this.comics = comics;
-        this.sortComics();
+    public void setComics(ArrayList<Comic> comics, InitializeType init) {
+        if ((init == InitializeType.EMPTY && comics.size() == 0) || init == InitializeType.FROM_OBJECT) {
+            this.comics = comics;
+            this.sortComics();
+        }
+        else {
+            throw new IllegalArgumentException("If initializing an empty ArrayList, please keep its size as zero.");
+        }
     }
 
     /**

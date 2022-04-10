@@ -303,7 +303,7 @@ public class XKCDController implements Initializable {
      * @param comicRepo The Repository object being passed back.
      */
     public void setComicRepo(Repository comicRepo) {
-        this.comicRepo.setComics(comicRepo.getComics());
+        this.comicRepo.setComics(comicRepo.getComics(), Repository.InitializeType.FROM_OBJECT);
         updateComicRepo(FileInstructions.BYPASS);
     }
 

@@ -4,14 +4,8 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,18 +22,26 @@ class RepositoryTest {
     }
 
     @Test
+    void setComics() {
+        defaultRepo.setComics(loadedFromFile.getComics(), Repository.InitializeType.FROM_OBJECT);
+        assertEquals(defaultRepo.getComics().toString(), loadedFromFile.getComics().toString());
+    }
+
+    @Test
+    void setInvalidComics() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> defaultRepo.setComics(loadedFromFile.getComics(), Repository.InitializeType.EMPTY)
+        );
+    }
+
+    @Test
     void getComics() {
         // If adding the comics using ArrayList's .add() makes changes retrievable from getComic(), then it works.
         for (int i = 0; i < testJsonData.length(); i++) {
             JSONObject data = (JSONObject) testJsonData.get(Integer.toString(i));
             defaultRepo.getComics().add(new Comic(data));
         }
-        assertEquals(defaultRepo.getComics().toString(), loadedFromFile.getComics().toString());
-    }
-
-    @Test
-    void setComics() {
-        defaultRepo.setComics(loadedFromFile.getComics());
         assertEquals(defaultRepo.getComics().toString(), loadedFromFile.getComics().toString());
     }
 
